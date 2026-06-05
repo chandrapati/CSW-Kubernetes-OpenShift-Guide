@@ -34,6 +34,21 @@ The five canonical patterns below mirror the five flow patterns from
 
 **Intent:** *Allow `payment` pod → `user-db` pod on tcp/27017.* *(Figures 24–28.)*
 
+![Figure 24: Pod-to-pod flow, intra node](../assets/figures/figure-24.png)
+*Figure 24 — Pod-to-pod flow, intra node (© Cisco Systems, Inc.)*
+
+![Figure 25: Pod-to-pod flow, inter node](../assets/figures/figure-25.png)
+*Figure 25 — Pod-to-pod flow, inter node (© Cisco Systems, Inc.)*
+
+![Figure 26: Example policy](../assets/figures/figure-26.png)
+*Figure 26 — Example policy: allow payment → user-db on tcp/27017 (© Cisco Systems, Inc.)*
+
+![Figure 27: Payment pod rule](../assets/figures/figure-27.png)
+*Figure 27 — Payment pod rule, EGRESS (© Cisco Systems, Inc.)*
+
+![Figure 28: Userdb pod rule](../assets/figures/figure-28.png)
+*Figure 28 — Userdb pod rule, INGRESS (© Cisco Systems, Inc.)*
+
 ```
    payment pod                         user-db pod
    ┌───────────────────┐               ┌───────────────────┐
@@ -63,6 +78,18 @@ The five canonical patterns below mirror the five flow patterns from
 
 **Intent:** *Allow `frontend` pod → `carts` Service on tcp/80* (service IP e.g.
 `10.100.135.136`, carts pod also listens on tcp/80). *(Figures 29–32.)*
+
+![Figure 29: Pod-to-pod via ClusterIP service](../assets/figures/figure-29.png)
+*Figure 29 — Pod-to-pod via ClusterIP service (© Cisco Systems, Inc.)*
+
+![Figure 30: Example policy, frontend to carts service](../assets/figures/figure-30.png)
+*Figure 30 — Example policy: allow frontend → carts service on tcp/80 (© Cisco Systems, Inc.)*
+
+![Figure 31: Frontend pod rules](../assets/figures/figure-31.png)
+*Figure 31 — Frontend pod rules, EGRESS to service IP (© Cisco Systems, Inc.)*
+
+![Figure 32: Carts pod rules](../assets/figures/figure-32.png)
+*Figure 32 — Carts pod rules, INGRESS (dst auto = carts pod IP) (© Cisco Systems, Inc.)*
 
 ```
    frontend pod                            carts pod
@@ -113,6 +140,18 @@ rule. *(Figures 33–36.)*
 
 > Source "Any" on the node rule = any interface belonging to that cluster node.
 
+![Figure 33: Node to pod health checks](../assets/figures/figure-33.png)
+*Figure 33 — Node to pod, health checks (© Cisco Systems, Inc.)*
+
+![Figure 34: Example policy, health/readiness probes](../assets/figures/figure-34.png)
+*Figure 34 — Example policy: allow health/readiness probes to frontend on tcp/80 (© Cisco Systems, Inc.)*
+
+![Figure 35: Cluster node rules](../assets/figures/figure-35.png)
+*Figure 35 — Cluster node rules, EGRESS node IP → pod (© Cisco Systems, Inc.)*
+
+![Figure 36: Pod rules, node IPs ingress](../assets/figures/figure-36.png)
+*Figure 36 — Pod rules, INGRESS node IPs → pod (© Cisco Systems, Inc.)*
+
 ---
 
 ## Pattern 4 — External → pod via NodePort / LoadBalancer
@@ -135,6 +174,18 @@ rule. *(Figures 33–36.)*
 |---|---|---|---|
 | Concrete (node) | cluster nodes | INGRESS | allow any → node pool IPs on tcp/**31095** (+ auto pre-routing allow) |
 | Container | frontend | INGRESS | allow any → frontend pod IP on tcp/**8079** (+ auto pod-port allow) |
+
+![Figure 37: External IP to pod](../assets/figures/figure-37.png)
+*Figure 37 — External IP to pod (© Cisco Systems, Inc.)*
+
+![Figure 38: Example policy, internet user to NodePort service](../assets/figures/figure-38.png)
+*Figure 38 — Example policy: allow any internet user → frontend NodePort service (© Cisco Systems, Inc.)*
+
+![Figure 39: Policy engine pre-routing allow rule](../assets/figures/figure-39.png)
+*Figure 39 — Policy engine pre-routing allow rule for NodePort (© Cisco Systems, Inc.)*
+
+![Figure 40: Frontend pod allow rule](../assets/figures/figure-40.png)
+*Figure 40 — Frontend pod, allow any IP on tcp/8079 (© Cisco Systems, Inc.)*
 
 > **Split-scope gotcha.** If nodes and app pods/services are mapped to
 > **different parent/child scopes**, you must add the allow rule to the frontend
@@ -162,6 +213,15 @@ rule. *(Figures 33–36.)*
 | Container | payment | EGRESS | allow payment pod → external IP on tcp/666 |
 | Concrete (node) | — | — | **none** (SNAT to node IP, default FORWARD allow-all) |
 
+![Figure 41: Pod to external IP](../assets/figures/figure-41.png)
+*Figure 41 — Pod to external IP (© Cisco Systems, Inc.)*
+
+![Figure 42: Example policy, frontend pod to external IP](../assets/figures/figure-42.png)
+*Figure 42 — Example policy: allow frontend pod IPs → external IP on tcp/666 (© Cisco Systems, Inc.)*
+
+![Figure 43: Payment pod EGRESS to external IP](../assets/figures/figure-43.png)
+*Figure 43 — Payment pod rule, EGRESS to external IP on tcp/666 (© Cisco Systems, Inc.)*
+
 ---
 
 ## Mental model — where do rules land?
@@ -183,6 +243,22 @@ pre-routing NodePort allows) so your **intent stays label-based**.
 > the CNI's own iptables rules are kept intact — **requires *Preserve Rules*** in
 > the agent config for K8s/OpenShift. See
 > [`operations/01-cni-coexistence.md`](../operations/01-cni-coexistence.md).
+
+---
+
+## Validate before, monitor after
+
+Enforcement sits between two analysis steps in the lifecycle. **Before**
+enforcing, live policy analysis lets you compare a policy version against real
+cluster traffic **without** enforcing it — so you catch unexpected allows/blocks
+first (Figure 23). **After** enforcing, live analysis continues as **compliance
+monitoring** to flag drift or unexpected outcomes (Figure 44).
+
+![Figure 23: Policy analysis](../assets/figures/figure-23.png)
+*Figure 23 — Policy analysis against live traffic, pre-enforcement (© Cisco Systems, Inc.)*
+
+![Figure 44: Policy compliance](../assets/figures/figure-44.png)
+*Figure 44 — Policy compliance monitoring, post-enforcement (© Cisco Systems, Inc.)*
 
 ---
 

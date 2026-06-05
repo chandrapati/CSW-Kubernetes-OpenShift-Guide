@@ -22,7 +22,8 @@ similar clusters) **together**.
    └───────────────────────────────────────────────┘
 ```
 
-*(Recreation of Figure 21.)*
+![Figure 21: Single scope design](../assets/figures/figure-21.png)
+*Figure 21 — Single scope design (© Cisco Systems, Inc.)*
 
 - Simplest model; one workspace, one RBAC boundary.
 - Best when one team owns the whole cluster, or clusters are single-tenant
@@ -42,7 +43,8 @@ policy management.
    └── Child scope: ns=checkout     ← pods/services in the checkout namespace
 ```
 
-*(Recreation of Figure 22.)*
+![Figure 22: Split scope design](../assets/figures/figure-22.png)
+*Figure 22 — Split scope design (© Cisco Systems, Inc.)*
 
 - Map the **cluster inventory to a parent scope**.
 - Map each application's pods/services to a **child scope** — commonly **one

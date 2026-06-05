@@ -20,12 +20,13 @@ This repo has two halves:
 > [Install Kubernetes or OpenShift Agents (4.0 User Guide)](https://www.cisco.com/c/en/us/td/docs/security/workload_security/secure_workload/user-guide/4_0/cisco-secure-workload-user-guide-on-prem-v40/deploy-software-agents.html).
 > See [`docs/00-official-references.md`](./docs/00-official-references.md).
 
-> **About the diagrams.** The figures in Cisco's whitepaper are
-> login-gated, copyrighted images. Every diagram in this repo is an
-> independent **text-based recreation** (Mermaid / ASCII) of the
-> corresponding concept, captioned with the official figure number so you
-> can line it up against the source. They render natively on GitHub and are
-> safe to fork.
+> **About the diagrams.** This guide embeds the **official Cisco figures**
+> from the whitepaper (in [`assets/figures/`](./assets/figures/), numbered
+> `figure-01.png` … `figure-46.png`) alongside **text-based Mermaid / ASCII
+> summaries** that annotate the same concepts for quick scanning and diffing.
+> The figures are © Cisco Systems, Inc., reproduced from the
+> [Secure Workload and Kubernetes Security — Deep Dive](https://secure.cisco.com/secure-workload/docs/secure-workload-and-k8s)
+> whitepaper for reference — see [`assets/figures/NOTICE.md`](./assets/figures/NOTICE.md).
 
 ---
 

@@ -13,6 +13,9 @@ The agent captures at **two levels**: the **pod** network interface and the
 **node** network interface (Figure 6). The platform then **dedupes** or marks
 flows as **Related** as appropriate.
 
+![Figure 6: Flow capture on network interfaces](../assets/figures/figure-06.png)
+*Figure 6 — Flow capture on network interfaces (© Cisco Systems, Inc.)*
+
 ---
 
 ## Inventory enrichment (the foundation)
@@ -33,7 +36,14 @@ then **enriched** with that metadata, so you segment on labels (e.g.
    Flows enriched with pod/service labels → dynamic, label-based policy objects
 ```
 
-*(Recreation of Figures 3–5 — pod/service profiles and a pod-metadata inventory filter.)*
+![Figure 3: Kubernetes pod profile with label metadata](../assets/figures/figure-03.png)
+*Figure 3 — Pod profile with label metadata (© Cisco Systems, Inc.)*
+
+![Figure 4: Kubernetes service profile with label metadata](../assets/figures/figure-04.png)
+*Figure 4 — Service profile with label metadata (© Cisco Systems, Inc.)*
+
+![Figure 5: Inventory filter based on pod metadata](../assets/figures/figure-05.png)
+*Figure 5 — Inventory filter based on pod metadata (© Cisco Systems, Inc.)*
 
 The cluster traffic patterns covered below:
 
@@ -56,7 +66,13 @@ The cluster traffic patterns covered below:
 ```
 
 A single flow `src=pod1IP, dst=pod2IP` is logged. Although it's seen at both
-pod interfaces, the two observations are **deduped** into one. *(Figures 7–8.)*
+pod interfaces, the two observations are **deduped** into one.
+
+![Figure 7: Intra-node pod-to-pod flow](../assets/figures/figure-07.png)
+*Figure 7 — Intra node, pod-to-pod flow (© Cisco Systems, Inc.)*
+
+![Figure 8: Intra-node captured pod-to-pod flow](../assets/figures/figure-08.png)
+*Figure 8 — Intra node, captured pod-to-pod flow (© Cisco Systems, Inc.)*
 
 ### Inter-node — pods on different nodes
 
@@ -79,7 +95,11 @@ depends entirely on the **CNI**:
 | **Overlay VXLAN / Geneve** | Yes | **UDP** tunnel flow `src=node1IP, dst=node2IP` (encapsulates the packet) |
 | **Overlay IPIP** | Yes | **TCP** flow `src=node1IP, dst=node2IP` |
 
-*(Figures 9–10.)*
+![Figure 9: Inter-node pod-to-pod flow](../assets/figures/figure-09.png)
+*Figure 9 — Inter node, pod-to-pod flow (© Cisco Systems, Inc.)*
+
+![Figure 10: Inter-node captured pod-to-pod flow](../assets/figures/figure-10.png)
+*Figure 10 — Inter node, captured pod-to-pod flow (© Cisco Systems, Inc.)*
 
 > **Reading tip.** When you see a UDP `node→node` flow alongside a `pod→pod`
 > flow, that's overlay encapsulation, not a separate connection. Don't write
@@ -103,7 +123,14 @@ namespace. That's why you see the **Service IP** on the first hop and the
    → Flow #1 and #2 shown as RELATED
 ```
 
-*(Figures 11–13.)*
+![Figure 11: Pod-to-pod flows via service](../assets/figures/figure-11.png)
+*Figure 11 — Pod-to-pod flows via service (© Cisco Systems, Inc.)*
+
+![Figure 12: Intra-node pod-to-pod via service](../assets/figures/figure-12.png)
+*Figure 12 — Intra node, pod-to-pod via service (© Cisco Systems, Inc.)*
+
+![Figure 13: Pod-to-pod via service, intra node](../assets/figures/figure-13.png)
+*Figure 13 — Pod-to-pod via service, intra node (© Cisco Systems, Inc.)*
 
 ### Inter-node
 
@@ -116,7 +143,11 @@ namespace. That's why you see the **Service IP** on the first hop and the
             direct routing → none;  VXLAN/Geneve → UDP node→node;  IPIP → TCP node→node
 ```
 
-*(Figures 14–15.)*
+![Figure 14: Pod-to-pod inter node](../assets/figures/figure-14.png)
+*Figure 14 — Pod-to-pod, inter node (© Cisco Systems, Inc.)*
+
+![Figure 15: Pod-to-pod via service, inter node](../assets/figures/figure-15.png)
+*Figure 15 — Pod-to-pod via service, inter node (© Cisco Systems, Inc.)*
 
 | Hop | Flow | Where captured |
 |---|---|---|
@@ -148,8 +179,17 @@ different node).
 4. A third flow may appear if the destination pod is on a different node (CNI
    dependent).
 
-*(Figures 16–18. For clarity the source above assumes the pod is on the same
-node the connection lands on.)*
+![Figure 16: External IP to pod IP flows](../assets/figures/figure-16.png)
+*Figure 16 — External IP to pod IP flows (© Cisco Systems, Inc.)*
+
+![Figure 17: External IP to node IP NodePort](../assets/figures/figure-17.png)
+*Figure 17 — External IP to Node IP:NodePort (© Cisco Systems, Inc.)*
+
+![Figure 18: Node IP to pod IP PodPort](../assets/figures/figure-18.png)
+*Figure 18 — Node IP to Pod IP:PodPort (© Cisco Systems, Inc.)*
+
+*(For clarity the source above assumes the pod is on the same node the
+connection lands on.)*
 
 ---
 
@@ -163,7 +203,13 @@ node the connection lands on.)*
 ```
 
 Two flows: the real `pod→external` at the pod interface, and the **SNAT'd**
-`node→external` at the node interface. *(Figures 19–20.)*
+`node→external` at the node interface.
+
+![Figure 19: Pod to external IP flows](../assets/figures/figure-19.png)
+*Figure 19 — Pod to external IP flows (© Cisco Systems, Inc.)*
+
+![Figure 20: Pod to external IP communications](../assets/figures/figure-20.png)
+*Figure 20 — Pod to external IP communications (© Cisco Systems, Inc.)*
 
 ---
 

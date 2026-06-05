@@ -3,6 +3,9 @@
 > **Cisco source.** [Secure Workload and Kubernetes Security — Deep Dive](https://secure.cisco.com/secure-workload/docs/secure-workload-and-k8s)
 > (Figures 1–2).
 
+![Figure 1: Secure Workload solution overview](../assets/figures/figure-01.png)
+*Figure 1 — Solution Overview (© Cisco Systems, Inc.)*
+
 Secure Workload delivers zero-trust microsegmentation and workload security
 across a hybrid multicloud estate through **agent-based and agentless**
 approaches. On Kubernetes/OpenShift it gives you:
@@ -52,7 +55,8 @@ flowchart TB
   PROC -- "compiled node + pod iptables rules" --> DSB
 ```
 
-*(Recreation of Figure 2 — Architecture.)*
+![Figure 2: Secure Workload and Kubernetes architecture](../assets/figures/figure-02.png)
+*Figure 2 — Architecture (© Cisco Systems, Inc.). The Mermaid diagram above is an annotated summary of this figure.*
 
 ### 1. Control / management plane
 On-prem Secure Workload cluster **or** SaaS-hosted tenant. This is where
