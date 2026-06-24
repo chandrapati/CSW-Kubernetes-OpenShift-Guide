@@ -1,5 +1,7 @@
 # Cisco Secure Workload on Kubernetes & OpenShift
 
+![Visitors](https://visitor-badge.laobi.icu/badge?page_id=chandrapati.CSW-Kubernetes-OpenShift-Guide&left_text=visitors)
+
 **Install the Secure Workload agent on Kubernetes / OpenShift nodes, and
 understand exactly how it sees flows and enforces policy inside a cluster.**
 
