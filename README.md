@@ -16,6 +16,8 @@ This repo has two halves:
    Script Installer path for the DaemonSet, plus prerequisites, the Kubernetes
    connector, OpenShift specifics (SCC), verification, and uninstall.
 
+The same install, drawn as a short illustrated guide, is in [csw-kubernetes-integration](https://github.com/chandrapati/csw-kubernetes-integration) and, for OpenShift including the privileged SCC, [csw-openshift-integration](https://github.com/chandrapati/csw-openshift-integration).
+
 > **Primary Cisco sources.** This guide is built from Cisco's
 > [Secure Workload and Kubernetes Security — Deep Dive](https://secure.cisco.com/secure-workload/docs/secure-workload-and-k8s)
 > whitepaper and the
